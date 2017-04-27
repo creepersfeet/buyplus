@@ -1,0 +1,131 @@
+<extend name="Common/back" />
+
+<block name="title">商品列表</block>
+
+<block name="content">
+
+    <div id="content">
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="pull-right">
+                    <a href="{:U('add')}" data-toggle="tooltip" title="新增" class="btn btn-primary"> <i class="fa fa-plus"></i>
+                    </a>
+                    <button type="button" data-toggle="tooltip" title="删除" class="btn btn-danger" onclick="confirm('确认？') ? $('#form-list').submit() : false;">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </div>
+                <h1>商品管理</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{:U('Manage/dashboard')}">首页</a>
+                    </li>
+                    <li>
+                        <a href="">商品管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-list"></i>
+                        商品列表
+                    </h3>
+                </div>
+                <div class="panel-body">
+
+                    <form action="{:U('multi')}" method="post" enctype="multipart/form-data" id="form-list">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+
+                                <thead>
+                                <tr>
+                                    <td style="width: 1px;" class="text-center">
+                                        <input type="checkbox" id="input-check-all"/>
+                                    </td>
+
+                                                                        <td class="text-center">ID</td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'upc', $order)}" class="{:ClassOrder('upc', $order)}">通用代码</a>
+                                    </td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'title', $order)}" class="{:ClassOrder('title', $order)}">名称</a>
+                                    </td>                                    <td class="text-center">缩略图</td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'price', $order)}" class="{:ClassOrder('price', $order)}">售价</a>
+                                    </td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'quantity', $order)}" class="{:ClassOrder('quantity', $order)}">库存</a>
+                                    </td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'stock_status_id', $order)}" class="{:ClassOrder('stock_status_id', $order)}">库存状态</a>
+                                    </td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'is_on_sale', $order)}" class="{:ClassOrder('is_on_sale', $order)}">上架</a>
+                                    </td>                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], 'sort_number', $order)}" class="{:ClassOrder('sort_number', $order)}">排序</a>
+                                    </td>
+                                    <!--<td class="text-left">-->
+                                        <!--描述-->
+                                    <!--</td>-->
+
+                                    <td class="text-right">管理</td>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <volist name="rows" id="row">
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="selected[]" value="{$row['id']}" />
+                                        </td>
+
+                                                                                <td class="text-left">{$row['id']}</td>
+                                        <td class="text-left">{$row['upc']|htmlspecialchars}</td>
+                                        <td class="text-left">{$row['title']|htmlspecialchars}</td>
+                                        <td class="text-left">
+                                            <if condition="$row['image_thumb']">
+                                                <img src="__PUBLIC__/Thumb/{$row['image_thumb']}" style="max-height:42px;">
+                                            <else />
+                                                <img src="__PUBLIC__/Back/image/avatar.png" style="max-height:42px;">
+                                            </if>
+                                        </td>
+                                        <td class="text-left">{$row['price']}</td>
+                                        <td class="text-left">{$row['quantity']}</td>
+                                        <td class="text-left">{$row['stock_status_id']}</td>
+                                        <td class="text-left">{$row['is_on_sale']}</td>
+                                        <td class="text-left">{$row['sort_number']}</td>
+                                        <!--<td class="text-left">{$row['description']|descriptionFilter}</td>-->
+
+
+                                        <td class="text-right">
+                                            <a href="{:U('edit', ['id'=>$row['id']])}" data-toggle="tooltip" title="编辑" class="btn btn-primary">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <a href="{:U('image', ['id'=>$row['id']])}" data-toggle="tooltip" title="相册图像" class="btn btn-primary">
+                                                <i class="fa fa-image"></i>
+                                            </a>
+                                            <a href="{:U('attribute', ['goods_id'=>$row['id']])}" data-toggle="tooltip" title="属性" class="btn btn-primary">
+                                                <i class="fa fa-cube"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="row">{$page_html}</div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="appendJs">
+
+    <script>
+        $(function(){
+            $('#input-check-all').click(function(evt) {
+                // 找到需要操作其他的checkbox
+                // 设置其checked属性, 与input-check-all一致即可.
+                $(':checkbox[name="selected[]"]').prop('checked', $(this).prop('checked'));
+            });
+        });
+
+    </script>
+</block>

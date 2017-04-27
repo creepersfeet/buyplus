@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <title>代码生成</title>
+    <base href="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <link href="__PUBLIC__/Back/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+    <link href="__PUBLIC__/Back/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link href="__PUBLIC__/Back/stylesheet/stylesheet.css" type="text/css"  rel="stylesheet" media="screen" />
+</head>
+<body>
+<div id="container">
+    <div id="content">
+        <div class="container-fluid"><br />
+            <br />
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">输入表信息</h1>
+                        </div>
+                        <div class="panel-body">
+                            <form action="{:U('generate')}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="input-table">表名</label>
+                                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-table"></i></span>
+                                        <input type="text" name="table" value="" placeholder="表名" id="input-table" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button id="button-field" data-url="{:U('field')}" class="btn btn-default"><i class="fa fa-table"></i> 结构</button>
+                                </div>
+
+                                <div class="form-group" id="div-comment" style="display:none;">
+                                    <label for="input-comment">表描述</label>
+                                    <div class="input-group"><span class="input-group-addon"><i class="fa fa-pen"></i></span>
+                                        <input type="text" name="comment" value="" placeholder="表描述" id="input-comment" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div id="div-fields" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            字段
+                                        </div>
+                                        <div class="col-sm-2">
+                                            描述
+                                        </div>
+                                        <div class="col-sm-1">
+                                            列表
+                                        </div>
+                                        <div class="col-sm-1">
+                                            排序
+                                        </div>
+                                        <div class="col-sm-1">
+                                            添加
+                                        </div>
+                                        <div class="col-sm-1">
+                                            编辑
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-create"></i> 创建</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="__PUBLIC__/Back/jquery/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Back/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Back/javascript/common.js" ></script>
+    <script>
+        $(function() {
+            $('#button-field').click(function(evt) {
+
+                // ajax请求获取字段信息
+                var url = $(this).data('url');
+                var data = {
+                    table: $('#input-table').val()
+                };
+                $.get(url, data, function(response) {
+                    // 形成 配置表单
+                    // 形成 表描述
+                    $('#div-comment').show();
+                    $('#input-comment').val(response.comment);
+
+                    // 形成每个字段的配置信息
+                    // 遍历所有的字段
+                    var html = '';
+                    $.each(response.fields, function(field, value) {
+                        html += '<div class="row">' +
+                                '<div class="col-sm-2">' +
+                                '<input type="text" name="fields[' + field +'][name]" value="'+value.name +'" class="form-control" readonly>' +
+                                '</div>' +
+                                '<div class="col-sm-2">' +
+                                '<input type="text" name="fields[' + field + '][comment]" value="'+value.comment + '" class="form-control">' +
+                                '</div>' +
+                                '<div class="col-sm-1">' +
+                                '<input type="checkbox" name="fields[' + field + '][is_list]" value="1" checked class="form-control">' +
+                                '</div>' +
+                                '<div class="col-sm-1">' +
+                                '<input type="checkbox" name="fields[' + field + '][is_order]" value="1" class="form-control">' +
+                                '</div>' +
+                                '<div class="col-sm-1">' +
+                                '<input type="checkbox" name="fields[' + field + '][is_add]" value="1" class="form-control">' +
+                                '</div>' +
+                                '<div class="col-sm-1">' +
+                                '<input type="checkbox" name="fields[' + field + '][is_edit]" value="1" class="form-control">' +
+                                '</div>' +
+                                '</div>';
+                    });
+                    // 追加到容器
+                    $('#div-fields').append(html).show();
+
+                }, 'json');
+
+                // 默认事件阻止
+                evt.preventDefault();
+            });
+        });
+
+    </script>
+</body>
+</html>

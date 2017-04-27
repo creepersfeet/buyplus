@@ -1,0 +1,3 @@
+                                    <td class="text-left">
+                                        <a href="{:UOrder('list', [], '%FIELD%', $order)}" class="{:ClassOrder('%FIELD%', $order)}">%FIELD_COMMENT%</a>
+                                    </td>

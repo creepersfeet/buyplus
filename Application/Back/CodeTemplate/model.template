@@ -1,0 +1,22 @@
+<?php
+namespace Back\Model;
+use Think\Model;
+
+/**
+ * Class %MODEL%Model
+ * 后台%NAME%模型
+ * @package Back\Model
+ */
+class %MODEL%Model extends Model
+{
+    // 批量验证
+    protected $patchValidate = true;
+
+    // 验证规则
+    protected $_validate = [
+    ];
+
+//    填充数据
+    protected $_auto = [
+    ];
+}

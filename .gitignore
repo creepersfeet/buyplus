@@ -1,0 +1,3 @@
+Application/Runtime/
+.idea/
+Application/Common/Conf/mysql-server.php

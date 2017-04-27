@@ -1,0 +1,83 @@
+<extend name="Common/back" />
+
+<block name="title">权限分配</block>
+
+<block name="content">
+
+    <div id="content">
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="pull-right">
+                    <button type="submit" form="form-grant" data-toggle="tooltip" title="保存" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <a href="{:U('list')}" data-toggle="tooltip" title="取消" class="btn btn-default">
+                        <i class="fa fa-reply"></i>
+                    </a>
+                </div>
+                <h1>角色</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{:U('Manage/dashboard')}">首页</a>
+                    </li>
+                    <li>
+                        <a href="">角色</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-pencil"></i>
+                        分配权限
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form action="{:U('grant', ['id'=>I('get.id')])}" method="post" enctype="multipart/form-data" id="form-grant" class="form-horizontal">
+                        <ul class="nav nav-tabs">
+
+                            <volist name="action_list" id="module">
+                                <li class="<eq name="i" value="1">active</eq>">
+                                    <a href="#tab-{$module['node']}" data-toggle="tab">{$module['title']}</a>
+                                </li>
+                            </volist>
+                        </ul>
+                        <div class="tab-content">
+                            <volist name="action_list" id="module">
+                                <div class="tab-pane <eq name="i" value="1">active</eq>" id="tab-{$module['node']}">
+                                <volist name="module['children']" id="controller">
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="input-title">{$controller['title']}</label>
+
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <volist name="controller['children']" id="action">
+                                                <div class="col-sm-2">
+                                                    <input type="checkbox" name="action_id[]" value="{$action['id']}" class="form-control" id="input-action-{$action['id']}" <if condition="in_array($action['id'], $checked_action_list)"> checked</if> /> <label for="input-action-{$action['id']}">{$action['title']}</label>
+                                                </div>
+                                            </volist>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                </volist>
+
+                                </div>
+                            </volist>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="appendJs">
+    <script src="__PUBLIC__/Back/validate/jquery.validate.min.js"></script>
+    <script src="__PUBLIC__/Back/validate/additional-methods.min.js"></script>
+    <script src="__PUBLIC__/Back/validate/localization/messages_zh.min.js"></script>
+</block>
